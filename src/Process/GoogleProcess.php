@@ -48,7 +48,7 @@ class GoogleProcess implements ProcessInterface {
         $this->goo->setClientId($this->config['google']['id']);
         $this->goo->setClientSecret($this->config['google']['secret']);
         $this->goo->setIncludeGrantedScopes(true);
-        $this->goo->setRedirectUri($this->config['redirect_url']);
+        $this->goo->setRedirectUri($this->config['google']['redirect_uri']);
         foreach($this->config['google']['scope'] as $scope){
             $this->goo->addScope($scope);
         }

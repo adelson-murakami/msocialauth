@@ -45,7 +45,7 @@ class FacebookProcess implements ProcessInterface {
      */
     public function getUrlLogin() {
         $helper = $this->fb->getRedirectLoginHelper();
-        $loginUrl = $helper->getLoginUrl($this->config['redirect_url'], $this->config['facebook']['scope']);
+        $loginUrl = $helper->getLoginUrl($this->config['facebook']['redirect_uri'], $this->config['facebook']['scope']);
         return $loginUrl;
     }
 
