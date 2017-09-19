@@ -18,6 +18,6 @@ $config = [
 ];
 
 $msocialauth = new \MSocialAuth\MSocialAuth($config);
-$msocialauth->setProvider('google');
+$msocialauth->setProvider('facebook');
 $msocialauth->authenticate();
 

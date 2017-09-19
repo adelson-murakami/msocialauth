@@ -23,5 +23,5 @@ $config = [
 ];
 
 $msocialauth = new \MSocialAuth\MSocialAuth($config);
-$msocialauth->setProvider('google');
+$msocialauth->setProvider('facebook');
 var_dump($msocialauth->callbackProvider());
