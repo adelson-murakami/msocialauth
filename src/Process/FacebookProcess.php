@@ -54,16 +54,20 @@ class FacebookProcess implements ProcessInterface {
      * @return Array
      */
     public function getProfile() {
-        $profile = json_decode($this->getUserProfile(),true);
-        $user = [
-            "uid" => $profile['id'],
-            "first_name" => $profile['first_name'],
-            "last_name" => $profile['last_name'],
-            "email"  => $profile['email'],
-            "gender" => $profile['gender'],
-            "picture" => $profile['picture']['data']['url']            
-        ];
-        return $user;
+        if ($this->getUserProfile()) {
+            $profile = json_decode($this->getUserProfile(), true);
+            $user = [
+                "uid" => $profile['id'],
+                "first_name" => $profile['first_name'],
+                "last_name" => $profile['last_name'],
+                "email" => $profile['email'],
+                "gender" => $profile['gender'],
+                "picture" => $profile['picture']['data']['url']
+            ];
+            return $user;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -75,17 +79,24 @@ class FacebookProcess implements ProcessInterface {
         $fb = $this->fb;
 
         $helper = $fb->getRedirectLoginHelper();
+
         if ($request->query->has('state')) {
             $helper->getPersistentDataHandler()->set('state', $request->get('state'));
         }
         try {
+
             $accessToken = $helper->getAccessToken();
         } catch (FacebookSDKException $e) {
             echo $e->getMessage();
             die();
         }
-        $profile = $fb->get('/me?fields=id,first_name,last_name,email,gender,locale,picture', $accessToken);        
-        $this->setUserProfile($profile->getBody());
+
+        if (is_null($accessToken)) {
+            $this->setUserProfile(false);
+        } else {
+            $profile = $fb->get('/me?fields=id,first_name,last_name,email,gender,locale,picture', $accessToken);
+            $this->setUserProfile($profile->getBody());
+        }
         return $this;
     }
 
